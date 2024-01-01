@@ -5,16 +5,35 @@
 
 use Amp\Sync\Channel;
 
-return function (Channel $channel): int {
-    printf("Received the following from parent: %s\n", $channel->receive());
+class Module
+{
+    public function getHandler()
+    {
+        return function (Channel $channel): int {
+            do  {
+                $received = $channel->receive();
 
-    print "Sleeping for 3 seconds...\n";
-    sleep(3); // Blocking call in process.
+                print "MODULE: Received!\n";
+                print_r($received);
 
-    $channel->send("Data sent from child.");
+                print "MODULE: Processing...\n";
 
-    print "Sleeping for 2 seconds...\n";
-    sleep(2); // Blocking call in process.
+                // calls the method and computes the below result
+                $result = 'Hello ' . $received[2];
 
-    return 42;
-};
+                // sends it back
+                $channel->send($result);
+                $t[] = hrtime(true);
+            } while ($received !== '__exit');
+
+            // exit status
+            print_r($t);        // avg diff : 282 microseconds / 0.282 ms / 282_232.6 nanoseconds
+                             // 1 assignment: 23 microseconds / 0.02 ms / 22_659 nano
+                                // single method call: 24_113 nano
+            return 1;
+        };
+    }
+}
+
+$module = new Module();
+return $module->getHandler();
