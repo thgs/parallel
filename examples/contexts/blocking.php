@@ -13,10 +13,9 @@ class Module
             do  {
                 $received = $channel->receive();
 
-                print "MODULE: Received!\n";
-                print_r($received);
-
-                print "MODULE: Processing...\n";
+//                print "MODULE: Received!\n";
+//                print_r($received);
+//                print "MODULE: Processing...\n";
 
                 // calls the method and computes the below result
                 $result = 'Hello ' . $received[2];

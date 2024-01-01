@@ -31,7 +31,7 @@ class Kernel
             $this->context->send(['interface', 'method', $arguments[0]]); // Data sent to child process, received on line 9 of contexts/blocking.php
 
             $result = $this->context->receive();
-            printf("Result: %s\n", $result);
+//            printf("Result: %s\n", $result);
         } finally {
 //            EventLoop::cancel($timer);
         }
